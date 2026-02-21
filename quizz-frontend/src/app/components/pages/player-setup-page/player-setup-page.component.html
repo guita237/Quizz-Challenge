@@ -1,0 +1,37 @@
+<div class="player-setup-container">
+  <app-progress-steps [currentStep]="2"></app-progress-steps>
+
+  <div class="page-content">
+    <h1 class="page-title">{{ 'player.title' | translate }}</h1>
+
+    <div class="form-container">
+      <form [formGroup]="playerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="playerName">{{ 'player.nameLabel' | translate }}</label>
+          <input
+            id="playerName"
+            type="text"
+            formControlName="name"
+            [placeholder]="'player.namePlaceholder' | translate"
+            class="form-input"
+            autocomplete="off"
+            autofocus
+          />
+          <div class="error-message" *ngIf="playerForm.get('name')?.invalid && playerForm.get('name')?.touched">
+            {{ 'player.error' | translate }}
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="goBack()" [disabled]="isLoading">
+            ← {{ 'common.back' | translate }}
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="playerForm.invalid || isLoading">
+            <span *ngIf="!isLoading">{{ 'common.continue' | translate }}</span>
+            <span *ngIf="isLoading" class="loading-spinner"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

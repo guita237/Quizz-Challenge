@@ -1,0 +1,141 @@
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.landing-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+.landing-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2.5rem;
+  max-width: 900px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 40px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+}
+
+.title-section {
+  margin-bottom: 3rem;
+}
+
+.main-title {
+  font-size: 3.8rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  letter-spacing: -1px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.95);
+  margin-bottom: 0;
+  font-weight: 500;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.start-section {
+  margin-top: 3rem;
+}
+
+.start-button {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 1.2rem 3.5rem;
+  border-radius: 60px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.start-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  background: #f8f9fa;
+  gap: 1rem;
+}
+
+.start-button .arrow {
+  transition: transform 0.4s ease;
+  font-size: 1.5rem;
+}
+
+.start-button:hover .arrow {
+  transform: translateX(8px);
+}
+
+@media (max-width: 768px) {
+  .landing-content {
+    padding: 2rem;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .start-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-content {
+    padding: 1.5rem;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .start-button {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="landing-container">
+  <div class="landing-background"></div>
+
+  <div class="landing-content">
+
+    <div class="title-section">
+      <h1 class="main-title">{{ 'app.title' | translate }}</h1>
+      <p class="subtitle">{{ 'app.subtitle' | translate }}</p>
+    </div>
+
+    <app-language-selector
+      [languages]="languages"
+      [selectedLanguage]="selectedLanguage"
+      (languageSelected)="onLanguageSelect($event)"
+    ></app-language-selector>
+
+    <div class="start-section">
+      <button
+        class="start-button"
+        (click)="startGame()"
+      >
+        <span>{{ 'common.start' | translate }}</span>
+        <span class="arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>

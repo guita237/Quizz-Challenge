@@ -1,0 +1,23 @@
+<div
+  class="category-card"
+  [class.selected]="isSelected"
+  (click)="onToggle()"
+  [attr.data-category-id]="category.id"
+>
+  <div class="category-icon-wrapper">
+    <span class="category-icon">{{ getCategoryIcon() }}</span>
+  </div>
+
+  <div class="category-content">
+    <h3 class="category-name">{{ category.name }}</h3>
+    <p class="category-description" *ngIf="category.description">
+      {{ category.description }}
+    </p>
+  </div>
+
+  <div class="category-checkbox">
+    <div class="checkbox-custom" [class.checked]="isSelected">
+      <span class="checkmark" *ngIf="isSelected">✓</span>
+    </div>
+  </div>
+</div>

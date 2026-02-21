@@ -1,0 +1,117 @@
+{
+  "app": {
+    "title": "Quiz Challenge",
+    "subtitle": "Testez vos connaissances"
+  },
+  "language": {
+    "select": "Choisissez votre langue",
+    "step": "Langue",
+    "french": "Français",
+    "english": "Anglais",
+    "german": "Allemand"
+  },
+  "player": {
+    "step": "Joueur",
+    "title": "Qui êtes-vous ?",
+    "nameLabel": "Votre nom",
+    "namePlaceholder": "Entrez votre nom",
+    "birthdateLabel": "Date de naissance (optionnel)",
+    "continue": "Continuer",
+    "error": "Veuillez entrer un nom valide (min. 2 caractères)"
+  },
+  "categories": {
+    "step": "Catégories",
+    "title": "Choisissez vos catégories",
+    "subtitle": "Sélectionnez les thèmes qui vous intéressent",
+    "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner",
+    "searchPlaceholder": "Rechercher des catégories...",
+    "minError": "Veuillez sélectionner au moins une catégorie",
+    "loadError": "Erreur lors du chargement des catégories",
+    "selected": "Sélectionnées",
+    "selectedCount": "{{count}} catégorie(s) sélectionnée(s)"
+  },
+  "config": {
+    "step": "Configuration",
+    "title": "Configuration du jeu",
+    "questionsPerCategory": "Questions par catégorie",
+    "totalQuestions": "Questions totales",
+    "summary": "Récapitulatif",
+    "sliderMin": "Min: {{min}}",
+    "sliderMax": "Max: {{max}}",
+    "maxPossible": "Maximum possible",
+    "startGame": "Démarrer le quiz",
+    "selectedCategories": "Catégories sélectionnées",
+    "max": "max",
+    "availabilityDetails": "Disponibilité des questions",
+    "sufficient": "Suffisant",
+    "insufficient": "Insuffisant",
+    "noCategories": "Aucune catégorie sélectionnée",
+    "validationError": "Erreur de validation",
+    "fixIssuesFirst": "Veuillez d'abord résoudre les problèmes",
+    "finalValidationError": "Erreur de validation finale",
+    "smartAdjustment": "Ajustement intelligent",
+    "finalDistribution": "Distribution finale des questions",
+    "insufficientCategories": "Catégories avec questions insuffisantes",
+    "adjustedConfig": "Configuration ajustée",
+    "smartStart": "Démarrer le SmartGame",
+    "reduced": "réduit",
+    "requested": "Demandé",
+    "actual": "Réel",
+    "efficiency": "Efficacité",
+    "adjustmentNote": "La répartition a été optimisée pour utiliser au maximum les questions disponibles tout en respectant les limites de chaque catégorie."
+
+  },
+  "quiz": {
+    "step": "Jeu",
+    "question": "Question {{current}}/{{total}}",
+    "questions": "questions",
+    "timer": "Temps restant",
+    "seconds": "sec",
+    "submit": "Valider",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "finish": "Terminer",
+    "confirmFinish": "Êtes-vous sûr de vouloir terminer le quiz ?",
+    "submitError": "Erreur lors de la soumission des réponses",
+    "answerSaved": "Réponse enregistrée !",
+    "timeout": "Temps écoulé ! Passage à la question suivante...",
+    "submitting": "Soumission en cours..."
+  },
+  "results": {
+    "step": "Résultats",
+    "title": "Résultats",
+    "points": "points",
+    "correct": "Correctes",
+    "time": "Temps",
+    "percentage": "Pourcentage",
+    "details": "Détails des réponses",
+    "yourAnswer": "Votre réponse",
+    "correctAnswer": "Bonne réponse",
+    "excellent": "Excellent !",
+    "good": "Bon travail !",
+    "average": "Pas mal !",
+    "tryAgain": "Essayez encore !",
+    "playAgain": "Rejouer",
+    "newPlayer": "Nouveau joueur",
+    "noAnswer": "Pas de réponse",
+    "incorrect": "Incorrectes",
+    "unanswered": "Sans réponse"
+  },
+  "common": {
+    "start": "Commencer",
+    "back": "Retour",
+    "next": "Suivant",
+    "continue": "Continuer",
+    "previous": "Précédent",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "accept": "Accepter",
+    "cancel": "Annuler",
+    "home": "Accueil"
+  },
+  "game": {
+    "startError": "Erreur lors du démarrage du jeu. Veuillez réessayer."
+  }
+}

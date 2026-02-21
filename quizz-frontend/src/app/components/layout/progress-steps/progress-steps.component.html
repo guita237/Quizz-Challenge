@@ -1,0 +1,23 @@
+<div class="progress-steps">
+  <div class="steps-container">
+    <div
+      *ngFor="let step of steps"
+      class="step-item"
+      [class.active]="isActive(step.step)"
+      [class.completed]="isCompleted(step.step)"
+    >
+      <div class="step-number">
+        {{ step.step }}
+      </div>
+      <div class="step-label">
+        {{ step.label | translate }}
+      </div>
+    </div>
+  </div>
+  <div class="progress-line">
+    <div
+      class="progress-fill"
+      [style.width.%]="((currentStep - 1) / (steps.length - 1)) * 100"
+    ></div>
+  </div>
+</div>

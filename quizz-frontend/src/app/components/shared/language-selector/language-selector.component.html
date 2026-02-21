@@ -1,0 +1,24 @@
+<div class="language-selector">
+  <div class="selector-title">
+    {{ 'language.select' | translate }}
+  </div>
+  <div class="flags-container">
+    <button
+      *ngFor="let lang of languages"
+      class="flag-button"
+      [class.selected]="lang.code === selectedLanguage"
+      (click)="onLanguageSelect(lang.code)"
+      [attr.aria-label]="lang.nativeName"
+    >
+      <div class="flag-wrapper">
+        <img
+          [src]="'assets/flags/' + lang.flag"
+          [alt]="lang.name"
+          class="flag-image"
+          loading="lazy"
+        />
+      </div>
+      <span class="language-name">{{ lang.name }}</span>
+    </button>
+  </div>
+</div>

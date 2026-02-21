@@ -1,0 +1,111 @@
+<div class="quiz-container">
+  <app-progress-steps [currentStep]="5"></app-progress-steps>
+
+  <div class="quiz-header">
+    <div class="progress-info">
+      <div class="question-counter">
+        {{ 'quiz.question' | translate: {
+        current: currentQuestionIndex + 1,
+        total: questions.length
+      } }}
+      </div>
+
+      <div class="progress-bar-container">
+        <div
+          class="progress-bar-fill"
+          [style.width.%]="getProgressPercentage()"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Timer amélioré avec barre de progression -->
+    <div class="timer-container">
+      <div class="timer" [style.color]="getTimerColor()">
+        <span class="timer-icon">⏱️</span>
+        <span class="timer-value">{{ getTimeFormatted() }}</span>
+      </div>
+      <div class="timer-progress">
+        <div class="timer-progress-fill"
+             [style.width.%]="getTimerWidth()"
+             [style.background]="getTimerColor()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-content" *ngIf="currentQuestion">
+    <div class="question-card">
+      <h2 class="question-text">{{ currentQuestion.text }}</h2>
+    </div>
+
+    <div class="answers-section">
+      <div class="answers-grid">
+        <button
+          *ngFor="let answer of currentQuestion.answers; let i = index"
+          class="answer-option"
+          [class.selected]="selectedAnswer === i"
+          [class.submitted]="answerSubmitted"
+          [class.disabled]="answerSubmitted"
+          (click)="selectAnswer(i)"
+          [disabled]="answerSubmitted || isSubmitting"
+        >
+          <span class="answer-letter">{{ getLetter(i) }}</span>
+          <span class="answer-text">{{ answer }}</span>
+          <span class="check-icon" *ngIf="selectedAnswer === i">✓</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Message si réponse soumise -->
+    <div class="answer-feedback" *ngIf="answerSubmitted">
+      <p>✅ {{ 'quiz.answerSaved' | translate }}</p>
+    </div>
+
+    <!-- Message si temps écoulé -->
+    <div class="timeout-message" *ngIf="timeLeft === 0 && !answerSubmitted">
+      <p>⏰ {{ 'quiz.timeout' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage | translate }}
+  </div>
+
+  <div class="quiz-footer">
+    <div class="navigation-buttons">
+      <button
+        class="nav-btn prev"
+        (click)="previousQuestion()"
+        [disabled]="currentQuestionIndex === 0 || isSubmitting"
+      >
+        ← {{ 'common.previous' | translate }}
+      </button>
+
+      <button
+        class="nav-btn next"
+        (click)="nextQuestion()"
+        [disabled]="isSubmitting"
+      >
+        <span *ngIf="currentQuestionIndex < questions.length - 1">
+          {{ 'common.next' | translate }} →
+        </span>
+        <span *ngIf="currentQuestionIndex === questions.length - 1">
+          {{ 'quiz.finish' | translate }} →
+        </span>
+      </button>
+    </div>
+
+    <button
+      class="finish-btn"
+      (click)="confirmFinish()"
+      [disabled]="isSubmitting"
+    >
+      {{ 'quiz.finish' | translate }}
+    </button>
+  </div>
+
+  <div class="loading-overlay" *ngIf="isSubmitting">
+    <div class="spinner"></div>
+    <p>{{ 'quiz.submitting' | translate }}</p>
+  </div>
+</div>

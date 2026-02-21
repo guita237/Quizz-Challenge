@@ -1,0 +1,146 @@
+<div class="results-container">
+  <app-progress-steps [currentStep]="6"></app-progress-steps>
+
+  <div class="page-content" *ngIf="result">
+    <!-- EN-TÊTE AVEC SCORE -->
+    <div class="results-header">
+      <h1 class="page-title">{{ 'results.title' | translate }}</h1>
+      <p class="score-message">{{ getScoreMessage() | translate }}</p>
+    </div>
+
+    <!-- SCORE CARD -->
+    <div class="score-card">
+      <div class="score-circle" [style.border-color]="getGrade().color">
+        <div class="score-percentage" [style.color]="getScoreColor()">
+          {{ percentage | number:'1.0-0' }}%
+        </div>
+        <div class="score-grade" [style.background]="getGrade().color">
+          {{ getGrade().letter }}
+        </div>
+      </div>
+
+      <div class="score-details">
+        <div class="score-value">
+          <span class="score-number">{{ correctAnswers }}</span>
+          <span class="score-separator">/</span>
+          <span class="score-total">{{ totalQuestions }}</span>
+        </div>
+        <div class="score-label">
+          {{ 'results.points' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- STATISTIQUES DÉTAILLÉES -->
+    <div class="stats-grid">
+      <div class="stat-card correct-stat">
+        <div class="stat-icon">✓</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ correctAnswers }}</span>
+          <span class="stat-label">{{ 'results.correct' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card incorrect-stat">
+        <div class="stat-icon">✗</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ incorrectAnswers }}</span>
+          <span class="stat-label">{{ 'results.incorrect' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card unanswered-stat">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ unanswered }}</span>
+          <span class="stat-label">{{ 'results.unanswered' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card time-stat">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getTimeFormatted() }}</span>
+          <span class="stat-label">{{ 'results.time' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card percent-stat">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <span class="stat-value">{{ percentage | number:'1.0-1' }}%</span>
+          <span class="stat-label">{{ 'results.percentage' | translate }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DÉTAILS DES QUESTIONS -->
+    <div class="details-section">
+      <div class="details-header" (click)="toggleDetails()">
+        <h3>{{ 'results.details' | translate }} ({{ enrichedResults.length }})</h3>
+        <span class="toggle-icon">{{ showDetails ? '▼' : '▶' }}</span>
+      </div>
+
+      <div class="details-list" *ngIf="showDetails">
+        <div *ngFor="let detail of enrichedResults; let i = index"
+             class="detail-card"
+             [class]="getStatusClass(detail)">
+
+          <!-- Numéro de question -->
+          <div class="question-number">{{ i + 1 }}</div>
+
+          <!-- Contenu de la question -->
+          <div class="question-content">
+            <p class="question-text">{{ detail.questionText }}</p>
+
+            <!-- Réponse de l'utilisateur -->
+            <div class="answer-row user-answer" *ngIf="detail.wasAnswered">
+              <span class="answer-label">{{ 'results.yourAnswer' | translate }}:</span>
+              <span class="answer-text">{{ detail.userAnswerText }}</span>
+              <span class="answer-letter">({{ detail.userAnswerLetter }})</span>
+              <span class="answer-status" [class.correct]="detail.correct" [class.incorrect]="!detail.correct">
+                {{ detail.correct ? '✓' : '✗' }}
+              </span>
+            </div>
+
+            <!-- Pas de réponse -->
+            <div class="answer-row no-answer" *ngIf="!detail.wasAnswered">
+              <span class="answer-label">{{ 'results.yourAnswer' | translate }}:</span>
+              <span class="answer-text no-answer-text">⏰ {{ 'results.noAnswer' | translate }}</span>
+            </div>
+
+            <!-- Bonne réponse (toujours affichée) -->
+            <div class="answer-row correct-answer">
+              <span class="answer-label">{{ 'results.correctAnswer' | translate }}:</span>
+              <span class="answer-text correct-text">{{ detail.correctAnswerText }}</span>
+              <span class="answer-letter">({{ detail.correctAnswerLetter }})</span>
+            </div>
+          </div>
+
+          <!-- Indicateur de statut -->
+          <div class="status-indicator" [class]="getStatusClass(detail)">
+            {{ getStatusIcon(detail) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOUTONS D'ACTION -->
+    <div class="actions">
+      <button class="btn-home" (click)="goToHome()">
+        <span class="btn-icon">🏠</span>
+        {{ 'common.home' | translate }}
+      </button>
+
+      <button class="btn-secondary play-again" (click)="playAgain()">
+        <span class="btn-icon">🔄</span>
+        {{ 'results.playAgain' | translate }}
+      </button>
+
+      <button class="btn-primary new-player" (click)="newPlayer()">
+        <span class="btn-icon">👤</span>
+        {{ 'results.newPlayer' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,271 @@
+<div class="game-config-container">
+  <app-progress-steps [currentStep]="4"></app-progress-steps>
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1 class="page-title">{{ 'config.title' | translate }}</h1>
+    </div>
+
+    <!-- Récapitulatif des catégories -->
+    <div class="categories-summary" *ngIf="selectedCategories.length > 0">
+      <h3>{{ 'config.selectedCategories' | translate }} ({{ selectedCategories.length }})</h3>
+      <div class="category-tags">
+        <span *ngFor="let cat of selectedCategories" class="category-tag">
+          {{ cat }}
+          <small *ngIf="categoryLimits.length > 0">
+            ({{ 'config.max' | translate }}: {{ getCategoryLimit(cat) }})
+          </small>
+        </span>
+      </div>
+    </div>
+
+    <!-- Contrôle du nombre de questions -->
+    <div class="config-card">
+      <div class="config-item">
+        <label for="questionsPerCategory">
+          {{ 'config.questionsPerCategory' | translate }}
+        </label>
+
+        <div class="counter-control">
+          <button
+            class="counter-btn"
+            (click)="decreaseQuestions()"
+            [disabled]="questionsPerCategory <= 1 || isValidating"
+            aria-label="Diminuer"
+          >
+            −
+          </button>
+
+          <div class="counter-value">
+            <span class="value" [style.color]="getSliderColor()">{{ questionsPerCategory }}</span>
+            <span class="unit">{{ 'quiz.questions' | translate }}</span>
+          </div>
+
+          <button
+            class="counter-btn"
+            (click)="increaseQuestions()"
+            [disabled]="questionsPerCategory >= getSliderMax() || isValidating"
+            aria-label="Augmenter"
+          >
+            +
+          </button>
+        </div>
+
+        <input
+          id="questionsPerCategory"
+          type="range"
+          class="slider"
+          [min]="minQuestions"
+          [max]="getSliderMax()"
+          [value]="questionsPerCategory"
+          (input)="onQuestionsPerCategoryChange($any($event.target).value)"
+          [disabled]="isValidating"
+          [style.--slider-color]="getSliderColor()"
+          aria-label="Nombre de questions par catégorie"
+        />
+
+        <div class="slider-labels">
+          <span>{{ 'config.sliderMin' | translate: { min: minQuestions } }}</span>
+          <span *ngIf="!isValidating" class="max-label" [style.color]="getSliderColor()">
+            {{ 'config.maxPossible' | translate }}: {{ getSliderMax() }}
+          </span>
+          <span *ngIf="isValidating" class="max-label">
+            <span class="spinner-small"></span> {{ 'common.loading' | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages d'avertissement -->
+    <div class="warning-card" *ngIf="warningMessage">
+      <div class="warning-icon">⚠️</div>
+      <div class="warning-content">
+        <pre>{{ warningMessage }}</pre>
+      </div>
+    </div>
+
+    <!-- Détails de disponibilité par catégorie -->
+    <div class="limits-details" *ngIf="categoryLimits.length > 0 && !isValidating">
+      <h4>{{ 'config.availabilityDetails' | translate }} :</h4>
+      <div class="limits-grid">
+        <div *ngFor="let cat of categoryLimits; trackBy: trackByCategoryId"
+             class="limit-item"
+             [class.insufficient]="!cat.sufficient">
+          <div class="limit-info">
+            <span class="limit-name">{{ cat.categoryName }}</span>
+            <span class="limit-badge"
+                  [class.available]="cat.sufficient"
+                  [class.warning]="!cat.sufficient">
+              {{ cat.availableQuestions }} / {{ cat.requestedQuestions }}
+            </span>
+          </div>
+          <div class="limit-bar-container">
+            <div class="limit-bar"
+                 [style.width.%]="(cat.availableQuestions / cat.requestedQuestions) * 100"
+                 [class.insufficient-bar]="!cat.sufficient">
+            </div>
+          </div>
+          <div class="limit-status">
+            <span *ngIf="cat.sufficient" class="status-available">
+              ✓ {{ 'config.sufficient' | translate }}
+            </span>
+            <span *ngIf="!cat.sufficient" class="status-warning">
+              ⚠ {{ 'config.insufficient' | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- État vide quand pas de données -->
+    <div class="limits-details" *ngIf="categoryLimits.length === 0 && !isValidating && selectedCategories.length > 0">
+      <div class="empty-state">
+        <p>{{ 'common.loading' | translate }}...</p>
+      </div>
+    </div>
+
+    <!-- Récapitulatif -->
+    <div class="summary-card">
+      <h3 class="summary-title">{{ 'config.summary' | translate }}</h3>
+
+      <div class="summary-stats">
+        <div class="stat-item">
+          <span class="stat-label">{{ 'categories.selected' | translate }}</span>
+          <span class="stat-value">{{ selectedCategoriesCount }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">{{ 'config.questionsPerCategory' | translate }}</span>
+          <span class="stat-value" [style.color]="getSliderColor()">
+            {{ questionsPerCategory }}
+          </span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item total">
+          <span class="stat-label">{{ 'config.totalQuestions' | translate }}</span>
+          <span class="stat-value total-value">{{ totalQuestions }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage | translate }}
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="page-actions">
+      <button
+        class="btn-secondary"
+        (click)="goBack()"
+        [disabled]="isLoading || isValidating"
+        aria-label="Retour"
+      >
+        ← {{ 'common.back' | translate }}
+      </button>
+
+      <!-- Bouton pour le jeu normal (quand la configuration est valide) -->
+      <button
+        class="btn-primary"
+        (click)="startGame()"
+        [disabled]="!canProceed || isLoading || isValidating || totalQuestions === 0"
+        *ngIf="canProceed && !showAdjustmentModal"
+        aria-label="Démarrer le jeu"
+      >
+        <span *ngIf="!isLoading && !isValidating">{{ 'config.startGame' | translate }}</span>
+        <span *ngIf="isLoading || isValidating" class="loading-spinner"></span>
+      </button>
+
+      <!-- Bouton pour le jeu intelligent (quand la configuration normale n'est pas possible) -->
+      <button
+        class="btn-primary smart-btn"
+        (click)="startSmartGame()"
+        [disabled]="selectedCategories.length === 0 || isLoading || isValidating"
+        *ngIf="!canProceed && !showAdjustmentModal"
+        aria-label="Démarrer avec configuration intelligente"
+      >
+        <span *ngIf="!isLoading && !isValidating">{{ 'config.smartStart' | translate }} ⚡</span>
+        <span *ngIf="isLoading || isValidating" class="loading-spinner"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODALE D'AJUSTEMENT INTELLIGENT -->
+  <div class="modal-overlay" *ngIf="showAdjustmentModal" (click)="declineAdjustedConfig()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon">🔧</div>
+        <h2>{{ 'config.smartAdjustment' | translate }}</h2>
+      </div>
+
+      <div class="modal-body">
+        <!-- Message d'ajustement -->
+        <div class="adjustment-message">
+          {{ getAdjustmentMessage() }}
+        </div>
+
+        <!-- Distribution détaillée -->
+        <div class="distribution-details" *ngIf="smartConfigResponse">
+          <h3>{{ 'config.finalDistribution' | translate }}</h3>
+
+          <div class="distribution-list">
+            <div *ngFor="let entry of smartConfigResponse.distributionPerCategory | keyvalue"
+                 class="distribution-item">
+              <span class="dist-cat">{{ entry.key }}</span>
+              <span class="dist-value">
+                {{ entry.value }} {{ 'quiz.questions' | translate }}
+                <span class="dist-percent"
+                      *ngIf="smartConfigResponse.requestedPerCategory > entry.value"
+                      title="Réduit par rapport à la demande">
+                  ({{ 'config.reduced' | translate }})
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Statistiques de distribution -->
+          <div class="distribution-stats">
+            <div class="stat-row">
+              <span>{{ 'config.requested' | translate }}:</span>
+              <span>{{ smartConfigResponse.requestedPerCategory }} × {{ selectedCategories.length }} =
+                {{ smartConfigResponse.requestedPerCategory * selectedCategories.length }} {{ 'quiz.questions' | translate }}</span>
+            </div>
+
+            <div class="stat-row actual">
+              <span>{{ 'config.actual' | translate }}:</span>
+              <span>{{ smartConfigResponse.totalQuestions }} {{ 'quiz.questions' | translate }}</span>
+            </div>
+
+            <div class="stat-row efficiency">
+              <span>{{ 'config.efficiency' | translate }}:</span>
+              <span>{{ getEfficiencyPercentage() }}%</span>
+            </div>
+          </div>
+
+          <!-- Total mis en évidence -->
+          <div class="total-line highlight">
+            <strong>{{ 'config.totalQuestions' | translate }}:</strong>
+            <span class="big-number">{{ smartConfigResponse.totalQuestions }}</span>
+          </div>
+
+          <!-- Note explicative si ajustement -->
+          <div class="adjustment-note" *ngIf="smartConfigResponse.adjusted">
+            <p>💡 {{ 'config.adjustmentNote' | translate }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pied de la modale avec boutons d'action -->
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="declineAdjustedConfig()">
+          {{ 'common.cancel' | translate }}
+        </button>
+        <button class="btn-primary" (click)="acceptAdjustedConfig()">
+          {{ 'common.accept' | translate }} ({{ smartConfigResponse?.totalQuestions || 0 }} {{ 'quiz.questions' | translate }})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
