@@ -26,19 +26,19 @@ Eine vollständige Webanwendung für interaktive Quiz-Spiele mit mehrsprachiger 
 │  │   Frontend   │ ──────────▶  │     Backend       │    │
 │  │  Angular 17  │  (nginx      │  Spring Boot 3    │    │
 │  │  nginx:80    │  proxy)      │  Gradle / Java 17 │    │
-│  └──────────────┘              └────────┬─────────┘    │
+│  └──────────────┘              └────────┬─────────┘     │
 │       :8083                             │               │
 │                                         ▼               │
 │                              ┌──────────────────┐       │
 │                              │      MySQL 8.0   │       │
 │                              │   mysql_data vol │       │
 │                              └──────────────────┘       │
-│                                                          │
+│                                                         │
 │                              ┌──────────────────┐       │
 │                              │     Adminer      │       │
 │                              │   DB-Verwaltung  │       │
 │                              └──────────────────┘       │
-│                                   :8082                  │
+│                                   :8082                 │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -208,5 +208,5 @@ ng serve
 
 | Komponente | README |
 |---|---|
-| Backend | [`quizz-backend/README.md`](quizz-backend/README.md) |
-| Frontend | [`quizz-frontend/README.md`](quizz-frontend/README.md) |
+| Backend | [`quizz-backend/README.md`](quizz-backend/Readme.md) |
+| Frontend | [`quizz-frontend/README.md`](quizz-frontend/Readme.md) |
